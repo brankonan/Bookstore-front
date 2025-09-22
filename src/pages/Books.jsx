@@ -1,12 +1,13 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { getAllBooks, deleteBook } from "../services/bookService";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Books() {
   const [books, setBooks] = useState([]);
   const [errorMsg, setErrorMsg] = useState("");
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   const fetchData = async () => {
     try {
@@ -75,6 +76,9 @@ export default function Books() {
                   <td style={td}>{b.publisher ? b.publisher.name : "—"}</td>
                   <td style={td}>
                     <button onClick={() => handleDelete(b.id)}>Delete</button>
+                    <button onClick={() => navigate(`/books/${b.id}/edit`)}>
+                      Edit
+                    </button>
                   </td>
                 </tr>
               ))}

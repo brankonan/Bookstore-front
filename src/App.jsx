@@ -4,7 +4,7 @@ import Header from "./components/Header";
 import Home from "./pages/Home";
 import Publishers from "./pages/Publishers";
 import Books from "./pages/Books";
-import CreateBook from "./pages/CreateBook";
+import BookForm from "./pages/BookForm";
 
 function App() {
   return (
@@ -14,7 +14,8 @@ function App() {
           <Route index element={<Home />} />
           <Route path="publishers" element={<Publishers />} />
           <Route path="books" element={<Books />} />
-          <Route poth="books/new" element={<CreateBook />} />
+          <Route path="books/new" element={<BookForm />} />
+          <Route path="books/:id/edit" element={<BookForm />} />
         </Route>
       </Routes>
     </BrowserRouter>
