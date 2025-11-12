@@ -1,13 +1,17 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { getAllBooks, deleteBook } from "../services/bookService";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { hasRole, isLoggedIn } from "../auth";
 
 export default function Books() {
   const [books, setBooks] = useState([]);
   const [errorMsg, setErrorMsg] = useState("");
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
+  const canEdit = hasRole("Urednik");
+  const canCreate = isLoggedIn(); // vec koristimo u Header-u
 
   const fetchData = async () => {
     try {
@@ -25,6 +29,7 @@ export default function Books() {
   }, []);
 
   const handleDelete = async (id) => {
+    if (!canEdit) return; // safety
     if (!window.confirm("Da li ste sigurni da zelite da obrisete knjigu?"))
       return;
     try {
@@ -42,7 +47,7 @@ export default function Books() {
   return (
     <div style={{ padding: 12 }}>
       <h2>Books</h2>
-      <Link to="/books/new">Create book</Link>
+
       {books.length === 0 ? (
         <p>Nema knjiga u bazi.</p>
       ) : (
@@ -75,10 +80,17 @@ export default function Books() {
                   <td style={td}>{b.author ? b.author.fullName : "—"}</td>
                   <td style={td}>{b.publisher ? b.publisher.name : "—"}</td>
                   <td style={td}>
-                    <button onClick={() => handleDelete(b.id)}>Delete</button>
-                    <button onClick={() => navigate(`/books/${b.id}/edit`)}>
-                      Edit
-                    </button>
+                    {canEdit && (
+                      <>
+                        <button onClick={() => handleDelete(b.id)}>
+                          Delete
+                        </button>
+                        <button onClick={() => navigate(`/books/${b.id}/edit`)}>
+                          Edit
+                        </button>
+                      </>
+                    )}
+                    {!canEdit && <span style={{ opacity: 0.6 }}>—</span>}
                   </td>
                 </tr>
               ))}

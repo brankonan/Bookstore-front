@@ -5,6 +5,8 @@ import Home from "./pages/Home";
 import Publishers from "./pages/Publishers";
 import Books from "./pages/Books";
 import BookForm from "./pages/BookForm";
+import Login from "./pages/Login";
+import { PrivateRoute, RoleRoute } from "./ProtectedRoute";
 
 function App() {
   return (
@@ -14,8 +16,26 @@ function App() {
           <Route index element={<Home />} />
           <Route path="publishers" element={<Publishers />} />
           <Route path="books" element={<Books />} />
-          <Route path="books/new" element={<BookForm />} />
-          <Route path="books/:id/edit" element={<BookForm />} />
+
+          <Route
+            path="books/new"
+            element={
+              <PrivateRoute>
+                <BookForm />
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            path="books/:id/edit"
+            element={
+              <RoleRoute role="Urednik">
+                <BookForm />
+              </RoleRoute>
+            }
+          />
+
+          <Route path="login" element={<Login />} />
         </Route>
       </Routes>
     </BrowserRouter>
