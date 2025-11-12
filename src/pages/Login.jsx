@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { saveToken } from "../auth";
+import GoogleLoginButton from "../components/GoogleLoginButton";
 
 export default function Login() {
   const [username, setU] = useState("");
@@ -19,10 +20,10 @@ export default function Login() {
         const body = await res.json().catch(() => ({}));
         throw new Error(body?.error || "Login failed");
       }
-      const data = await res.json(); // { token: "..." }
+      const data = await res.json();
       if (!data?.token) throw new Error("Token missing in response");
       saveToken(data.token);
-      window.location.href = "/"; // ili navigacija
+      window.location.href = "/";
     } catch (err) {
       setError(err.message ?? "Greska prilikom prijave");
     }
@@ -50,6 +51,9 @@ export default function Login() {
           onChange={(e) => setP(e.target.value)}
         />
         <button type="submit">Prijavi se</button>
+        <div style={{ marginTop: 16 }}>
+          <GoogleLoginButton />
+        </div>
       </form>
     </div>
   );
