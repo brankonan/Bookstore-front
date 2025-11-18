@@ -3,15 +3,17 @@ import { useState, useEffect } from "react";
 import { getAllBooks, deleteBook } from "../services/bookService";
 import { useNavigate } from "react-router-dom";
 import { hasRole, isLoggedIn } from "../auth";
+import ReviewModal from "../components/ReviewModal";
 
 export default function Books() {
   const [books, setBooks] = useState([]);
   const [errorMsg, setErrorMsg] = useState("");
   const [loading, setLoading] = useState(true);
+  const [selectedBook, setSelectedBook] = useState(null);
   const navigate = useNavigate();
 
   const canEdit = hasRole("Urednik");
-  const canCreate = isLoggedIn(); // vec koristimo u Header-u
+  const canCreate = isLoggedIn();
 
   const fetchData = async () => {
     try {
@@ -90,6 +92,11 @@ export default function Books() {
                         </button>
                       </>
                     )}
+                    {isLoggedIn() && (
+                      <button onClick={() => setSelectedBook(b)}>
+                        Ostavi recenziju
+                      </button>
+                    )}
                     {!canEdit && <span style={{ opacity: 0.6 }}>—</span>}
                   </td>
                 </tr>
@@ -97,6 +104,14 @@ export default function Books() {
             </tbody>
           </table>
         </div>
+      )}
+
+      {selectedBook && (
+        <ReviewModal
+          book={selectedBook}
+          onClose={() => setSelectedBook(null)}
+          onReviewAdded={fetchData}
+        />
       )}
     </div>
   );

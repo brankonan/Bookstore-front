@@ -1,4 +1,4 @@
-// src/auth.js
+
 export function saveToken(token) {
   localStorage.setItem("token", token);
 }
@@ -34,15 +34,12 @@ export function decodePayload() {
 
 function extractRoles(payload) {
   if (!payload) return [];
-  // najcešće: "role" kao string ili niz
   if (Array.isArray(payload.role)) return payload.role;
   if (typeof payload.role === "string") return [payload.role];
 
-  // ponekad biblioteke upisu "roles"
   if (Array.isArray(payload.roles)) return payload.roles;
   if (typeof payload.roles === "string") return [payload.roles];
 
-  // ClaimTypes.Role (schematized)
   const schemaRole =
     payload["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
   if (Array.isArray(schemaRole)) return schemaRole;
@@ -54,7 +51,7 @@ function extractRoles(payload) {
 export function isLoggedIn() {
   const p = decodePayload();
   if (!p) return false;
-  if (!p.exp) return true; // ako ne generišeš exp
+  if (!p.exp) return true;
   const now = Math.floor(Date.now() / 1000);
   return p.exp > now;
 }
