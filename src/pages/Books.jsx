@@ -31,7 +31,7 @@ export default function Books() {
   }, []);
 
   const handleDelete = async (id) => {
-    if (!canEdit) return; // safety
+    if (!canEdit) return;
     if (!window.confirm("Da li ste sigurni da zelite da obrisete knjigu?"))
       return;
     try {

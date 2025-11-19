@@ -19,8 +19,9 @@ export default function Header() {
         <Link to="/publishers">Publishers</Link>
         <Link to="/books">Books</Link>
 
-        {/* "Create Book" – dozvoljeno bilo kom prijavljenom */}
         {logged && <Link to="/books/new">Create Book</Link>}
+
+        {logged && <Link to="/volumes/search">Search volumes</Link>}
 
         <span style={{ flex: 1 }} />
         {!logged ? <Link to="/login">Login</Link> : <LogoutButton />}

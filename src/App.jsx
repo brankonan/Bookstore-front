@@ -7,6 +7,8 @@ import Books from "./pages/Books";
 import BookForm from "./pages/BookForm";
 import Login from "./pages/Login";
 import { PrivateRoute, RoleRoute } from "./ProtectedRoute";
+import SearchVolumes from "./pages/SearchVolumes";
+import SearchIssues from "./pages/SearchIssues";
 
 function App() {
   return (
@@ -31,6 +33,24 @@ function App() {
             element={
               <RoleRoute role="Urednik">
                 <BookForm />
+              </RoleRoute>
+            }
+          />
+
+          <Route
+            path="volumes/search"
+            element={
+              <RoleRoute role="Urednik">
+                <SearchVolumes />
+              </RoleRoute>
+            }
+          />
+
+          <Route
+            path="volumes/:volumeId/issues"
+            element={
+              <RoleRoute role="Urednik">
+                <SearchIssues />
               </RoleRoute>
             }
           />
